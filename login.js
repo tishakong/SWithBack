@@ -20,11 +20,11 @@ router.post('/', function(req, res) {
                 res.redirect('/');///
                 res.end();              
             } else {
-                res.send('<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); document.location.href="/login";</script>');    
+                res.send('login failed');    
             }
         });
     } else {
-        res.send('<script type="text/javascript">alert("email과 password를 입력하세요!"); document.location.href="/login";</script>');    
+        res.send('Enter your email and password');    
         res.end();
     }
 });
