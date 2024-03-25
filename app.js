@@ -1,19 +1,26 @@
 const express = require('express');
-const cors = require('cors');
-const db = require('./db.js');
+const session = require('express-session');
+
+var loginRouter = require('./login');
+var logoutRouter = require('./logout');
+
 const app = express();
-const PORT = 3000;
+const port = 3000;
 
-const addPostRouter = require('./addpost');
-const addScrapRouter = require('./addscrap');
-const deleteScrapRouter = require('./deletescrap');
 
-app.use(cors());
-app.use(express.json());
-app.use('/addpost', addPostRouter);
-app.use('/addscrap', addScrapRouter);
-app.use('/deletescrap', deleteScrapRouter);
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+
+app.use('/login',loginRouter);
+app.use('/logout',logoutRouter);
+app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/login', (req, res) => res.send('login page'));
+
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
