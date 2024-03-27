@@ -17,14 +17,17 @@ router.post('/', function(req, res) {
             if (results.length > 0) {
                 req.session.loggedin = true;
                 req.session.email = email; 
-                res.redirect('/');///
+                //res.redirect('/');///
+                res.status(200);
                 res.end();              
             } else {
-                res.send('login failed');    
+                res.send('login failed');
+                res.status(500);    
             }
         });
     } else {
-        res.send('Enter your email and password');    
+        res.send('Enter your email and password');  
+        res.status(501);  
         res.end();
     }
 });
