@@ -9,26 +9,23 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 ////로그인
 router.post('/', function(req, res) {
-   var email = req.body.email;
+    var email = req.body.email;
     var password = req.body.password;
     if (email && password) {
         connection.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password], function(error, results, fields) {
             if (error) throw error;
             if (results.length > 0) {
                 req.session.loggedin = true;
-                req.session.email = email; 
-                //res.redirect('/');///
-                res.status(200);
-                res.end();              
+                req.session.email = email;
+                // 로그인 성공 시 JSON 응답 반환
+                res.status(200).json({ message: "Logged in successfully" });
             } else {
-                res.send('login failed');
-                res.status(500);    
+                // 로그인 실패 시 JSON 응답 반환
+                res.status(401).json({ message: "Invalid email or password" });
             }
         });
     } else {
-        res.send('Enter your email and password');  
-        res.status(501);  
-        res.end();
+        res.status(400).json({ message: "Email and password are required" });
     }
 });
 
