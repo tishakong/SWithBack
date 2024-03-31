@@ -12,6 +12,8 @@ const deleteScrapRouter = require('./deletescrap');
 const loginRouter = require('./login');
 const logoutRouter = require('./logout');
 const editPostRouter = require('./editpost');
+const addReviewRouter = require('./addreview.js');
+const deleteReviewRouter = require('./deletereview.js');
 
 app.use(session({
     secret: 'your-secret-key',
@@ -27,6 +29,8 @@ app.use('/deletescrap', deleteScrapRouter);
 app.use('/login',loginRouter);
 app.use('/logout',logoutRouter);
 app.use('/editpost', editPostRouter);
+app.use('/addReview', addReviewRouter);
+app.user('/deleteReview', deleteReviewRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
