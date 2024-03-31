@@ -7,6 +7,7 @@ const port = 3000;
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
+const deletePostRouter = require('./deletepost.js')
 const getPostsRouter = require('./getposts');
 const addScrapRouter = require('./addscrap');
 const deleteScrapRouter = require('./deletescrap');
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
+app.use('/deletepost', deletePostRouter);
 app.use('/getposts', getPostsRouter);
 app.use('/addscrap', addScrapRouter);
 app.use('/deletescrap', deleteScrapRouter);
