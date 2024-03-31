@@ -3,13 +3,13 @@ const router = express.Router();
 const db = require('./db.js');
 
 router.delete('/:post_id', (req, res) => {
-    const post_id = req.body;
+    const postId = req.params.post_id;
 
     const sql = `
-        DELETE FROM posts
-        WHERE post_id = ?
-        `;
-    const values = [post_id];
+    DELETE FROM posts
+    WHERE post_id = ?
+  `;
+    const values = [postId];
 
     db.query(sql, values, (err, results) => {
         if (err) {
