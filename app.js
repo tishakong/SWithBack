@@ -11,6 +11,7 @@ const deletePostRouter = require('./deletepost.js')
 const getPostsRouter = require('./getposts');
 const addScrapRouter = require('./addscrap');
 const deleteScrapRouter = require('./deletescrap');
+const getreviewRouter = require('./getreview');
 var loginRouter = require('./login');
 var logoutRouter = require('./logout');
 
@@ -27,8 +28,9 @@ app.use('/deletepost', deletePostRouter);
 app.use('/getposts', getPostsRouter);
 app.use('/addscrap', addScrapRouter);
 app.use('/deletescrap', deleteScrapRouter);
-app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
+app.use('/login',loginRouter);
+app.use('/logout',logoutRouter);
+app.use('/getreview',getreviewRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
