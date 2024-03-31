@@ -7,7 +7,7 @@ const port = 3000;
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
-const deletePostRouter = require('./deletepost.js')
+const deletePostRouter = require('./deletepost')
 const getPostsRouter = require('./getposts');
 const addScrapRouter = require('./addscrap');
 const deleteScrapRouter = require('./deletescrap');
@@ -28,9 +28,9 @@ app.use('/deletepost', deletePostRouter);
 app.use('/getposts', getPostsRouter);
 app.use('/addscrap', addScrapRouter);
 app.use('/deletescrap', deleteScrapRouter);
-app.use('/login',loginRouter);
-app.use('/logout',logoutRouter);
-app.use('/getreview',getreviewRouter);
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
+app.use('/getreview', getreviewRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
