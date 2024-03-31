@@ -7,6 +7,7 @@ const port = 3000;
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
+const getPostsRouter = require('./getposts');
 const addScrapRouter = require('./addscrap');
 const deleteScrapRouter = require('./deletescrap');
 var loginRouter = require('./login');
@@ -21,13 +22,14 @@ app.use(cors());
 app.use(express.json());
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
+app.use('/getposts', getPostsRouter);
 app.use('/addscrap', addScrapRouter);
 app.use('/deletescrap', deleteScrapRouter);
-app.use('/login',loginRouter);
-app.use('/logout',logoutRouter);
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-  });
+});
