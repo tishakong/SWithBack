@@ -3,10 +3,10 @@ const router = express.Router();
 const db = require('./db.js');
 
 router.delete('/:post_id', (req, res) => {
-    const post_id = req.params.post_id;
-    const sql =     'DELETE FROM reviews WHERE post_id = ?';
-
-    db.query(sql, post_id, (error, results) => {
+    const {reviewer_id, reviewee_id, post_id} = req.body;
+    const sql =     'DELETE FROM reviews WHERE reviewer_id = ? AND reviewee_id = ? AND post_id = ?';
+    const values = [reviewer_id, reviewee_id, post_id];
+    db.query(sql, values, (error, results) => {
         if (error) {
             console.error('Error executing MySQL query: ',error);
             res.status(500).send('Internal server error');
