@@ -30,7 +30,7 @@ app.use('/login',loginRouter);
 app.use('/logout',logoutRouter);
 app.use('/editpost', editPostRouter);
 app.use('/addReview', addReviewRouter);
-app.user('/deleteReview', deleteReviewRouter);
+app.use('/deleteReview', deleteReviewRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
