@@ -7,9 +7,9 @@ router.delete('/:post_id', (req, res) => {
 
     const sql = `
     DELETE FROM posts
-    WHERE id = ?
+    WHERE post_id = ?
   `;
-    const values = [postId];
+    const values = [post_id];
 
     db.query(sql, values, (err, results) => {
         if (err) {
