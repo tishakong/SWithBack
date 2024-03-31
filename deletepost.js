@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('./db.js');
 
-router.delete('/', (req, res) => {
+router.delete('/:post_id', (req, res) => {
     const sql = `
     DELETE FROM posts
     WHERE post_id = ?
