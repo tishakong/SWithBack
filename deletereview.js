@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const bodyParser = require('body-parser');
+
 const db = require('./db.js');
+
+router.use(bodyParser.urlencoded({ extended: false }));
 
 router.delete('/:post_id', (req, res) => {
     const {reviewer_id, reviewee_id, post_id} = req.body;
