@@ -12,6 +12,7 @@ const getPostsRouter = require('./getposts');
 const addScrapRouter = require('./addscrap');
 const deleteScrapRouter = require('./deletescrap');
 const getreviewRouter = require('./getreview');
+const checkemailRouter = require('./checkemail');
 var loginRouter = require('./login');
 var logoutRouter = require('./logout');
 
@@ -31,6 +32,7 @@ app.use('/deletescrap', deleteScrapRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/getreview', getreviewRouter);
+app.use('/checkemail', checkemailRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
