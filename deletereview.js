@@ -6,7 +6,7 @@ const db = require('./db.js');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.delete('/:post_id', (req, res) => {
+router.delete('/', (req, res) => {
     const {reviewer_id, reviewee_id, post_id} = req.body;
     const sql =     'DELETE FROM reviews WHERE reviewer_id = ? AND reviewee_id = ? AND post_id = ?';
     const values = [reviewer_id, reviewee_id, post_id];

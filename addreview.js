@@ -8,11 +8,11 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 router.post('/', (req,res) => {
 
-    const {reviewee_id, reviewer_id, rating, content} = req.body;
+    const {reviewee_id, reviewer_id, post_id, rating, content} = req.body;
     
     const sql = 
-        'INSERT INTO reviews (reviewee_id, reviewer_id, rating, content) VALUES (?, ?, ?, ?)';
-    const values = [reviewee_id, reviewer_id, rating, content];
+        'INSERT INTO reviews (reviewee_id, reviewer_id, post_id, rating, content) VALUES (?, ?, ?, ?, ?)';
+    const values = [reviewee_id, reviewer_id, post_id, rating, content];
     
     db.query(sql, values, (error, results) => {
         if (error) {
