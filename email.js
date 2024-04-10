@@ -42,7 +42,9 @@ router.post('/sendVerificationCode', (req, res) => {
             res.status(500).send('이메일 전송 중 오류가 발생했습니다.');
         } else {
             console.log('이메일 전송 성공: ', info.response);
-            res.status(200).send('인증 코드가 성공적으로 전송되었습니다.');
+            // 세션 ID를 응답으로 클라이언트에게 보냄
+            res.setHeader('Set-Cookie', `sessionId=${req.sessionID}; Path=/`);
+            res.status(200).json({ code: verificationCode});
         }
     });
 });
@@ -51,9 +53,15 @@ router.post('/verifyCode', (req, res) => {
     const { codeFromUser } = req.body;
     const expectedCode = req.session.verificationCode; 
 
+    console.log(codeFromUser);
+    console.log(typeof codeFromUser);
+    console.log('전송된 코드 : ',expectedCode);
+    console.log(typeof expectedCode);
 
-    if (codeFromUser == expectedCode) {
+
+    if (codeFromUser === expectedCode) {
         res.status(200).send('인증에 성공했습니다.');
+    
     } else {
         res.status(400).send(`올바르지 않은 인증 코드입니다.`);
     }

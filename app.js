@@ -24,7 +24,7 @@ const emailRouter = require('./email');
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
 }));
 app.use(cors());
 app.use(express.json());
