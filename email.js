@@ -11,9 +11,9 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 const transporter = nodemailer.createTransport({
-    service : 'naver',
+    service : 'gmail',
     auth : {
-        user : 'ha9eun@naver.com',
+        user : 'swithsookmyung@gmail.com',
         pass : process.env.EMAIL_PASSWORD
     }
 });
