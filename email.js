@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
     service : 'naver',
     auth : {
         user : 'ha9eun@naver.com',
-        pass : ''
+        pass : process.env.EMAIL_PASSWORD
     }
 });
 

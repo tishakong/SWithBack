@@ -4,6 +4,7 @@ const db = require('./db.js');
 const session = require('express-session');
 const app = express();
 const port = 3000;
+require('dotenv').config();
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
