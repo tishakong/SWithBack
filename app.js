@@ -4,6 +4,7 @@ const db = require('./db.js');
 const session = require('express-session');
 const app = express();
 const port = 3000;
+require('dotenv').config();
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
@@ -18,6 +19,7 @@ const addReviewRouter = require('./addreview.js');
 const deleteReviewRouter = require('./deletereview.js');
 const getreviewRouter = require('./getreview');
 const checkemailRouter = require('./checkemail');
+const emailRouter = require('./email');
 
 app.use(session({
     secret: 'your-secret-key',
@@ -39,6 +41,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/getreview', getreviewRouter);
 app.use('/checkemail', checkemailRouter);
+app.use('/email', emailRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
