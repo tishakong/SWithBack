@@ -55,7 +55,7 @@ router.post('/verifyCode', (req, res) => {
     if (codeFromUser == expectedCode) {
         res.status(200).send('인증에 성공했습니다.');
     } else {
-        res.status(400).send(`올바르지 않은 인증 코드입니다. ${expectedCode}`);
+        res.status(400).send(`올바르지 않은 인증 코드입니다.`);
     }
 });
 
