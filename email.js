@@ -29,7 +29,7 @@ router.post('/sendVerificationCode', (req, res) => {
     req.session.verificationCode = verificationCode;
 
     const mailOptions = {
-        from : 'ha9eun@naver.com',
+        from : 'swithsookmyung@gmail.com',
         to : email,
         subject : '인증 코드',
         text : `인증 코드 : ${verificationCode}`
