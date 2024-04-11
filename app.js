@@ -22,9 +22,10 @@ const checkemailRouter = require('./checkemail');
 const emailRouter = require('./email');
 
 app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: true,
+    secret: 'your-secret-key', //SID를 생성할 때 사용되는 비밀키    
+    resave: false, // 변경사항이 없어도 세션을 다시 저장하는지 여부
+    saveUninitialized: true, // 어떠한 데이터도 추가되거나 변경되지 않은 세션 설정 허용
+    //cookie: { maxAge: 300000 } //5분 지나면 만료
 }));
 app.use(cors());
 app.use(express.json());
