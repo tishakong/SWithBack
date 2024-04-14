@@ -26,7 +26,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }));
-app.use(cors());
+app.use(cors({origin:'*'}));
 app.use(express.json());
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
