@@ -3,12 +3,20 @@ const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const randomstring = require('randomstring');
 
+//추가
+const session = require('express-session');
 
 const router = express.Router();
 
-
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+
+//추가
+router.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+}));
 
 const transporter = nodemailer.createTransport({
     service : 'gmail',
@@ -28,6 +36,9 @@ router.post('/sendVerificationCode', (req, res) => {
     
     req.session.verificationCode = verificationCode;
 
+    //추가
+    console.log('보내진 인증코드 : ', req.session.verificationCode);
+
     const mailOptions = {
         from : 'swithsookmyung@gmail.com',
         to : email,
@@ -45,6 +56,8 @@ router.post('/sendVerificationCode', (req, res) => {
             // 세션 ID를 응답으로 클라이언트에게 보냄
             res.setHeader('Set-Cookie', `sessionId=${req.sessionID}; Path=/`);
             res.status(200).json({ code: verificationCode});
+            //추가
+            res.status(200).send('이메일 전송에 성공하였습니다.');
         }
     });
 });
@@ -53,11 +66,13 @@ router.post('/verifyCode', (req, res) => {
     const { codeFromUser } = req.body;
     const expectedCode = req.session.verificationCode; 
 
-    console.log(codeFromUser);
+    console.log('입력된 코드 : ',codeFromUser);
     console.log(typeof codeFromUser);
     console.log('전송된 코드 : ',expectedCode);
     console.log(typeof expectedCode);
 
+    //추가
+    console.log('보내진 인증코드 : ', req.session.verificationCode);
 
     if (codeFromUser === expectedCode) {
         res.status(200).send('인증에 성공했습니다.');
@@ -68,3 +83,6 @@ router.post('/verifyCode', (req, res) => {
 });
 
 module.exports = router;
+
+
+
