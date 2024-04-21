@@ -6,7 +6,7 @@ router.post('/', (req, res) => {
   const {user_id, post_id} = req.body;
 
   const sql = `
-    INSERT INTO scrap_post (user_id, post_id) 
+    INSERT INTO scrap_posts (user_id, post_id) 
     VALUES (?, ?)
   `;
   const values = [user_id, post_id];
