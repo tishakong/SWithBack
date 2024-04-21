@@ -6,7 +6,7 @@ const port = 3000;
 app.use(express.json());
 
 app.post('/', (req, res) => {
-    const { email, password, name, student_id, nickname, user_image, major1, major2, major3, introduction, all_noti, chatroom_noti, qna_noti, accept_noti, review_noti } = req.body;
+    const { email, password, name, student_id, nickname, user_image, major1, major1_change_log, major2, major3, introduction, all_noti, chatroom_noti, qna_noti, accept_noti, review_noti } = req.body;
 
     const newUser = {
         email,
