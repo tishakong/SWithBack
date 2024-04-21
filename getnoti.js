@@ -2,14 +2,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('./db.js');
 
-router.delete('/', (req, res) => {
-  const { user_id, post_id } = req.body;
+router.get('/', (req, res) => {
+  const {user_id} = req.query;
 
   const sql = `
-    DELETE FROM scrap_posts
-    WHERE user_id = ? AND post_id = ?
+    SELECT * FROM notifications WHERE (user_id=?)
   `;
-  const values = [user_id, post_id];
+  const values = [user_id];
 
   db.query(sql, values, (err, results) => {
     if (err) {
@@ -17,7 +16,11 @@ router.delete('/', (req, res) => {
       res.status(500).send('Internal Server Error');
       return;
     }
-    res.status(200).send('Scrap deleted successfully');
+    if (results.length === 0){
+      res.status(202).send('수신한 알림이 없습니다.');
+      return;
+    }
+    res.status(201).json(results);
   });
 });
 
