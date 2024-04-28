@@ -4,8 +4,6 @@ const bodyParser = require('body-parser');
 
 const db = require('./db.js');
 
-router.use(bodyParser.urlencoded({ extended: false }));
-
 router.delete('/', (req, res) => {
     const {user_id, noti_id} = req.body;
     const sql =     'DELETE FROM notifications WHERE user_id = ? AND noti_id = ?';
