@@ -17,7 +17,8 @@ router.post('/', (req, res) => {
       res.status(500).send('Internal Server Error');
       return;
     }
-    res.status(201).send('Post added successfully');
+    const postId = results.insertId; // 삽입된 레코드의 post_id 값
+    res.status(201).json({ postId: postId, message: 'Post added successfully' })
   });
 });
 
