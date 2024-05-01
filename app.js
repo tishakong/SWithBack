@@ -23,8 +23,8 @@ const emailRouter = require('./email');
 const getnotiRouter = require('./getnoti');
 const readnotiRouter = require('./readnoti');
 const deletenotiRouter = require('./deletenoti');
-const majorRouter = require('./major.js');
 
+const majorRouter = require('./major.js');
 app.use(session({
     secret: 'your-secret-key',
     resave: false,

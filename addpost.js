@@ -3,13 +3,13 @@ const router = express.Router();
 const db = require('./db.js');
 
 router.post('/', (req, res) => {
-  const {user_id, title, category, chat_name, content, progress } = req.body;
+  const {writer_id, title, category, study_name, content, progress } = req.body;
 
   const sql = `
-    INSERT INTO posts (user_id, title, category, chat_name, content, progress) 
+    INSERT INTO posts (writer_id, title, category, study_name, content, progress) 
     VALUES (?, ?, ?, ?, ?, ?)
   `;
-  const values = [user_id, title, category, chat_name, content, progress];
+  const values = [writer_id, title, category, study_name, content, progress];
 
   db.query(sql, values, (err, results) => {
     if (err) {
@@ -17,7 +17,8 @@ router.post('/', (req, res) => {
       res.status(500).send('Internal Server Error');
       return;
     }
-    res.status(201).send('Post added successfully');
+    const postId = results.insertId; // 삽입된 레코드의 post_id 값
+    res.status(201).json({ postId: postId, message: 'Post added successfully' })
   });
 });
 

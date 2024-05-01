@@ -3,16 +3,18 @@ const db = require('./db.js');
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+
 app.post('/', (req, res) => {
-    const { email, password, name, studentnum, nickname, profile_image, major1, major2, major3, introduction } = req.body;
+    const { email, password, name, student_id, nickname, user_image, major1, major2, major3, introduction } = req.body;
 
     const newUser = {
         email,
         password,
         name,
-        studentnum,
+        student_id,
         nickname,
-        profile_image,
+        user_image,
         major1,
         major2: major2 || null,
         major3: major3 || null,
