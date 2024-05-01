@@ -20,13 +20,17 @@ const deleteReviewRouter = require('./deletereview.js');
 const getreviewRouter = require('./getreview');
 const checkemailRouter = require('./checkemail');
 const emailRouter = require('./email');
+const getnotiRouter = require('./getnoti');
+const readnotiRouter = require('./readnoti');
+const deletenotiRouter = require('./deletenoti');
 const majorRouter = require('./major.js');
+
 app.use(session({
-    secret: 'your-secret-key', //SID를 생성할 때 사용되는 비밀키    
-    resave: false, // 변경사항이 없어도 세션을 다시 저장하는지 여부
-    saveUninitialized: true, // 어떠한 데이터도 추가되거나 변경되지 않은 세션 설정 허용
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
 }));
-app.use(cors());
+app.use(cors({origin:'*'}));
 app.use(express.json());
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
@@ -42,9 +46,10 @@ app.use('/logout', logoutRouter);
 app.use('/getreview', getreviewRouter);
 app.use('/checkemail', checkemailRouter);
 app.use('/email', emailRouter);
+app.use('/getnoti', getnotiRouter);
+app.use('/readnoti', readnotiRouter);
+app.use('/deletenoti', deletenotiRouter);
 app.use('/major', majorRouter);
-
-app.get('/', (req, res) => res.send('Hello World!'));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
