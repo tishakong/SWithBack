@@ -20,7 +20,7 @@ const deleteReviewRouter = require('./deletereview.js');
 const getreviewRouter = require('./getreview');
 const checkemailRouter = require('./checkemail');
 const emailRouter = require('./email');
-
+const majorRouter = require('./major.js');
 app.use(session({
     secret: 'your-secret-key', //SID를 생성할 때 사용되는 비밀키    
     resave: false, // 변경사항이 없어도 세션을 다시 저장하는지 여부
@@ -42,6 +42,7 @@ app.use('/logout', logoutRouter);
 app.use('/getreview', getreviewRouter);
 app.use('/checkemail', checkemailRouter);
 app.use('/email', emailRouter);
+app.use('/major', majorRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
