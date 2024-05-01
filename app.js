@@ -20,6 +20,7 @@ const deleteReviewRouter = require('./deletereview.js');
 const getreviewRouter = require('./getreview');
 const checkemailRouter = require('./checkemail');
 const emailRouter = require('./email');
+const setNotiRouter = require('./setnoti');
 
 app.use(session({
     secret: 'your-secret-key',
@@ -42,6 +43,7 @@ app.use('/logout', logoutRouter);
 app.use('/getreview', getreviewRouter);
 app.use('/checkemail', checkemailRouter);
 app.use('/email', emailRouter);
+app.use('/setnoti', setNotiRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 

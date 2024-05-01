@@ -4,8 +4,8 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/setnoti', (req, res) => {
-    const { userId, all_noti = true, chatroom_noti = true, qna_noti = true, accept_noti = true, review_noti = true } = req.body;
+app.post('/', (req, res) => {
+    const { user_id, all_noti = true, chatroom_noti = true, qna_noti = true, accept_noti = true, review_noti = true } = req.body;
 
     const notificationSettings = all_noti ? {
         all_noti,
@@ -21,13 +21,13 @@ app.post('/setnoti', (req, res) => {
         review_noti: false
     };
 
-    db.query('UPDATE users SET ? WHERE id = ?', [notificationSettings, userId], (err, results) => {
+    db.query('UPDATE users SET ? WHERE id = ?', [notificationSettings, user_id], (err, results) => {
         if (err) {
             console.error('Error updating notification settings: ' + err.stack);
             res.status(500).json({ error: 'Internal server error' });
             return;
         }
-        console.log('Notification settings updated for user ID: ' + userId);
+        console.log('Notification settings updated for user ID: ' + user_id);
         res.status(200).json({ message: 'Notification settings updated successfully' });
     });
 });
