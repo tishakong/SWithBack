@@ -20,6 +20,7 @@ app.post('/', (req, res) => {
         major2: major2 || null,
         major3: major3 || null,
         introduction: introduction || null,
+        
     };
 
     db.query('INSERT INTO users SET ?', newUser, (err, results) => {
