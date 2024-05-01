@@ -20,13 +20,17 @@ const deleteReviewRouter = require('./deletereview.js');
 const getreviewRouter = require('./getreview');
 const checkemailRouter = require('./checkemail');
 const emailRouter = require('./email');
+const getnotiRouter = require('./getnoti');
+const readnotiRouter = require('./readnoti');
+const deletenotiRouter = require('./deletenoti');
+const majorRouter = require('./major.js');
 
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
 }));
-app.use(cors());
+app.use(cors({origin:'*'}));
 app.use(express.json());
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
@@ -42,8 +46,10 @@ app.use('/logout', logoutRouter);
 app.use('/getreview', getreviewRouter);
 app.use('/checkemail', checkemailRouter);
 app.use('/email', emailRouter);
-
-app.get('/', (req, res) => res.send('Hello World!'));
+app.use('/getnoti', getnotiRouter);
+app.use('/readnoti', readnotiRouter);
+app.use('/deletenoti', deletenotiRouter);
+app.use('/major', majorRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
