@@ -1,8 +1,4 @@
-// - 방장이 게시글에서 모집 완료 버튼을 눌렀을 경우
-//     - 해당 게시글 ID와 연결된 채팅방이 없다면 채팅방이 생성된다. 
-// 채팅방 생성시 방장의 화면은 곧바로 채팅방 화면으로 전환된다. (채팅방 생성 알림은 따로 없음)
-//     - 해당 게시글 ID와 연결된 채팅방이 이미 있다면 채팅방 생성이 되지 않는다.
-
+//newchatroom.js
 const express = require('express'); 
 const router = express.Router();
 const db = require('./db');
