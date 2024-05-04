@@ -5,6 +5,7 @@ const session = require('express-session');
 const app = express();
 const port = 3000;
 require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
@@ -33,6 +34,8 @@ app.use(session({
 }));
 app.use(cors({origin:'*'}));
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
 app.use('/deletepost', deletePostRouter);
