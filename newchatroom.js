@@ -7,34 +7,95 @@ router.post('/', (req,res) => {
 
     const { post_id } = req.body;
     
-    db.query('SELECT post_id FROM chat_rooms WHERE post_id = ?', [post_id], (error, results) => {
+    // 게시글에 연결된 채팅방이 있는지 확인
+    db.query('SELECT room_id FROM chat_rooms WHERE post_id = ?', [post_id], (error, results) => { 
         if (error) {
             console.error('Error occurred while checking chat room:', error);
             return;
           }
         
         if (results.length === 0) { //게시글에 연결된 채팅방이 없다면 
-            db.query(`INSERT INTO chat_rooms (post_id) VALUES (?)`, [post_id], (error, results) => { //새로 채팅방 생성
+            //새로 채팅방 생성
+            db.query('INSERT INTO chat_rooms (post_id) VALUES (?)', [post_id], (error, results) => { 
                 if (error) {
-                    console.error('Error occurred while creating chat room:', error);
+                    console.error('Error executing MySQL query: ' + error);
+                    res.status(500).send('Internal Server Error1');
                     return;
                 }
-               
-                console.log('Chat room created successfully for post_id:', post_id);
-                res.status(200).send('Chat room created successfullly.');
+                const room_id = results.insertId; //auto increment primary key
+                
+                // 방장 ID 불러오기
+                db.query('SELECT writer_id FROM posts WHERE post_id = ?', [post_id], (error, results) => {
+                    if (error) {
+                        console.error('Error executing MySQL query: ' + error);
+                        res.status(500).send('Internal Server Error2');
+                        return;
+                    }
+                    const writer_id = results[0].writer_id;
+
+                    //방장 추가
+                    db.query('INSERT INTO chat_room_mem (room_id, member_id) VALUES (?, ?)', [room_id, writer_id], (error, results) => {
+                        if (error) {
+                            console.error('Error executing MySQL query: ' + error);
+                            res.status(500).send('Internal Server Error3');
+                            return;
+                        }
+                        // 수락된 지원자 불러오기
+                        db.query('SELECT applicant_id FROM applications WHERE post_id = ? AND status = "수락"', [post_id], (error, results) => {
+                            if (error) {
+                                console.error('Error executing MySQL query: ' + error);
+                                res.status(500).send('Internal Server Error4');
+                                return;
+                            }
+                            const applicants = results.map(result => [room_id, result.applicant_id]);
+
+                            //수락된 지원자 채팅방에 추가
+                            db.query(`INSERT INTO chat_room_mem (room_id, member_id) VALUES ?`, [applicants], (error, results) => {
+                                if (error) {
+                                    console.error('Error executing MySQL query: ' + error);
+                                    res.status(500).send('Internal Server Error5');
+                                    return;
+                                }
+                                res.status(200).send('New chat room created successfully');
+                            });
+                        });
+                    
+                    });
+
+                });
+                
             });
-        } else {
+        } else { // 이미 채팅방이 있는 경우
             console.log('Chat room already exists for post_id:', post_id);
-            res.status(500).send('Chat room already exists.');
+            const room_id = results[0].room_id; // 채팅방 ID
+            // 수락인 지원자들
+            db.query('SELECT applicant_id FROM applications WHERE post_id = ? AND status = "수락"', [post_id], (error, results) => {
+                if (error) {
+                    console.error('Error executing MySQL query: ' + error);
+                    res.status(500).send('Internal Server Error6');
+                    return;
+                }
+                const applicants = results.map(result => [room_id, result.applicant_id]); 
+                //새로운 지원자들만 추가
+                applicants.forEach(applicant => {
+                    db.query('INSERT IGNORE INTO chat_room_mem (room_id, member_id) VALUES ?', [applicants], (error, results) => {
+                        if (error) {
+                            console.error('Error executing MySQL query: ' + error);
+                            res.status(500).send('Internal Server Error7');
+                            return;
+                        }
+                        
+    
+                    }); 
+                });
+
+                res.status(200).send('Chat room updated successfully');
+                
+
+
+            });
         }
     });
 });
 
 module.exports = router;
-
-//프론트엔드에서 postId를 받는다.
-//postId를 post_id로 가지는 chat_rooms 레코드가 있는지 확인한다.
-//없다면, chat_rooms 레코드를 생성한다. 그리고 posts 테이블에서 post_id가 postId인 레코드의 writer_id를 불러온다. 
-//불러온 writer_id로 chat_mem테이블에 새로운 채팅방 ID로 member_id가 writer_id인 레코드를 만든다.
-//applications 테이블로 가서 post_id가 postId이고, status가 '수락'인 applicant_id도 member_id로 추가.
-//있다면, applications 테이블로 가서 post_id가 postId이고, status가 '수락'인 applicant_id가 chat_mem테이블에 있는지 확인하고, 없는 사람만 추가.
