@@ -25,6 +25,7 @@ const readnotiRouter = require('./readnoti');
 const deletenotiRouter = require('./deletenoti');
 const view_countRouter = require('./view_count');
 
+const majorRouter = require('./major.js');
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
@@ -50,6 +51,7 @@ app.use('/getnoti', getnotiRouter);
 app.use('/readnoti', readnotiRouter);
 app.use('/deletenoti', deletenotiRouter);
 app.use('/view_count', view_countRouter);
+app.use('/major', majorRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
