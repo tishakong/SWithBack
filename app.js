@@ -24,8 +24,9 @@ const setNotiRouter = require('./setnoti');
 const getUserRouter = require('./userid');
 const getnotiRouter = require('./getnoti');
 const readnotiRouter = require('./readnoti');
-const deletenotiRouter = require('./deletenoti');
+const deletenotiRouter = require('./deletenoti')
 const view_countRouter = require('./view_count');
+const majorDetailRouter = require('./majorDetail');
 
 const majorRouter = require('./major.js');
 app.use(session({
@@ -57,6 +58,7 @@ app.use('/readnoti', readnotiRouter);
 app.use('/deletenoti', deletenotiRouter);
 app.use('/view_count', view_countRouter);
 app.use('/major', majorRouter);
+app.use('/majordetail', majorDetailRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
