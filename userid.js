@@ -5,7 +5,6 @@ const port = 3000;
 
 app.use(express.json());
 
-// 사용자 정보를 가져오는 API 엔드포인트
 app.get('/:userId', (req, res) => {
     const userId = req.params.userId;
 
