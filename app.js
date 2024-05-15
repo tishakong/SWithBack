@@ -22,6 +22,10 @@ const checkEmailRouter = require('./checkemail');
 const emailRouter = require('./email');
 const setNotiRouter = require('./setnoti');
 const getUserRouter = require('./userid');
+const getnotiRouter = require('./getnoti');
+const readnotiRouter = require('./readnoti');
+const deletenotiRouter = require('./deletenoti');
+const view_countRouter = require('./view_count');
 
 app.use(session({
     secret: 'your-secret-key',
@@ -47,6 +51,11 @@ app.use('/checkemail', checkEmailRouter);
 app.use('/email', emailRouter);
 app.use('/setnoti', setNotiRouter);
 app.use('/user', getUserRouter);
+app.use('/getnoti', getnotiRouter);
+app.use('/readnoti', readnotiRouter);
+app.use('/deletenoti', deletenotiRouter);
+app.use('/view_count', view_countRouter);
+app.use('/major', majorRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
