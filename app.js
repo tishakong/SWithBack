@@ -27,12 +27,13 @@ const readnotiRouter = require('./readnoti');
 const deletenotiRouter = require('./deletenoti');
 const view_countRouter = require('./view_count');
 
+const majorRouter = require('./major.js');
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
 }));
-app.use(cors());
+app.use(cors({origin:'*'}));
 app.use(express.json());
 
 app.use('/signup', signupRouter);

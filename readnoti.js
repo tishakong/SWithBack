@@ -2,14 +2,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('./db.js');
 
-router.delete('/', (req, res) => {
-  const { user_id, post_id } = req.body;
+router.patch('/', (req, res) => {
+  const {user_id, noti_id} = req.body;
 
   const sql = `
-    DELETE FROM scrap_posts
-    WHERE user_id = ? AND post_id = ?
+    UPDATE notifications SET isread = True WHERE user_id = ? AND noti_id = ?
   `;
-  const values = [user_id, post_id];
+  const values = [user_id, noti_id];
 
   db.query(sql, values, (err, results) => {
     if (err) {
@@ -17,7 +16,7 @@ router.delete('/', (req, res) => {
       res.status(500).send('Internal Server Error');
       return;
     }
-    res.status(200).send('Scrap deleted successfully');
+    res.status(201).send('Notification updated successfully');
   });
 });
 
