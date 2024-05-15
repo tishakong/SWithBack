@@ -21,7 +21,7 @@ app.post('/', (req, res) => {
         review_noti: false
     };
 
-    db.query('UPDATE users SET ? WHERE id = ?', [notificationSettings, user_id], (err, results) => {
+    db.query('UPDATE users SET ? WHERE user_id = ?', [notificationSettings, user_id], (err, results) => {
         if (err) {
             console.error('Error updating notification settings: ' + err.stack);
             res.status(500).json({ error: 'Internal server error' });
