@@ -6,7 +6,7 @@ const port = 3000;
 app.use(express.json());
 
 app.post('/', (req, res) => {
-    const { email, password, name, student_id, nickname, user_image, major1, major2, major3, introduction } = req.body;
+    const { email, password, name, student_id, nickname, user_image, major1, major1_change_log, major2, major3, introduction } = req.body;
 
     const newUser = {
         email,
@@ -16,9 +16,10 @@ app.post('/', (req, res) => {
         nickname,
         user_image,
         major1,
+        major1_change_log: major1_change_log || false,
         major2: major2 || null,
         major3: major3 || null,
-        introduction: introduction || null
+        introduction: introduction || null,
     };
 
     db.query('INSERT INTO users SET ?', newUser, (err, results) => {
