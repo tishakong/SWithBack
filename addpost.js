@@ -3,13 +3,13 @@ const router = express.Router();
 const db = require('./db.js');
 
 router.post('/', (req, res) => {
-  const {writer_id, title, category, study_name, content, progress } = req.body;
+  const {writer_id, title, category, study_name, content} = req.body;
 
   const sql = `
-    INSERT INTO posts (writer_id, title, category, study_name, content, progress) 
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO posts (writer_id, title, category, study_name, content) 
+    VALUES (?, ?, ?, ?, ?)
   `;
-  const values = [writer_id, title, category, study_name, content, progress];
+  const values = [writer_id, title, category, study_name, content];
 
   db.query(sql, values, (err, results) => {
     if (err) {
