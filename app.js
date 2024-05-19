@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
-const deletePostRouter = require('./deletepost')
+const deletePostRouter = require('./deletepost');
 const getPostsRouter = require('./getposts');
 const addScrapRouter = require('./addscrap');
 const deleteScrapRouter = require('./deletescrap');
@@ -18,12 +18,17 @@ const logoutRouter = require('./logout');
 const editPostRouter = require('./editpost');
 const addReviewRouter = require('./addreview.js');
 const deleteReviewRouter = require('./deletereview.js');
-const getreviewRouter = require('./getreview');
-const checkemailRouter = require('./checkemail');
+const getReviewRouter = require('./getreview');
+const checkEmailRouter = require('./checkemail');
 const emailRouter = require('./email');
+const setNotiRouter = require('./setnoti');
+const getUserRouter = require('./userid');
 const getnotiRouter = require('./getnoti');
 const readnotiRouter = require('./readnoti');
-const deletenotiRouter = require('./deletenoti');
+const deletenotiRouter = require('./deletenoti')
+const view_countRouter = require('./view_count');
+const majorDetailRouter = require('./majorDetail');
+
 const majorRouter = require('./major.js');
 const newchatroomRouter = require('./newchatroom.js');
 const viewchatroomRouter = require('./viewchatroom.js');
@@ -48,15 +53,21 @@ app.use('/addReview', addReviewRouter);
 app.use('/deleteReview', deleteReviewRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
-app.use('/getreview', getreviewRouter);
-app.use('/checkemail', checkemailRouter);
+app.use('/getreview', getReviewRouter);
+app.use('/checkemail', checkEmailRouter);
 app.use('/email', emailRouter);
+app.use('/setnoti', setNotiRouter);
+app.use('/user', getUserRouter);
 app.use('/getnoti', getnotiRouter);
 app.use('/readnoti', readnotiRouter);
 app.use('/deletenoti', deletenotiRouter);
+app.use('/view_count', view_countRouter);
 app.use('/major', majorRouter);
 app.use('/newchatroom', newchatroomRouter);
 app.use('/viewchatroom', viewchatroomRouter);
+app.use('/majordetail', majorDetailRouter);
+
+app.get('/', (req, res) => res.send('Hello World!'));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
