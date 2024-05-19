@@ -26,6 +26,7 @@ const readnotiRouter = require('./readnoti');
 const deletenotiRouter = require('./deletenoti');
 const majorRouter = require('./major.js');
 const newchatroomRouter = require('./newchatroom.js');
+const viewchatroomRouter = require('./viewchatroom.js');
 
 app.use(session({
     secret: 'your-secret-key',
@@ -55,6 +56,7 @@ app.use('/readnoti', readnotiRouter);
 app.use('/deletenoti', deletenotiRouter);
 app.use('/major', majorRouter);
 app.use('/newchatroom', newchatroomRouter);
+app.use('/viewchatroom', viewchatroomRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
