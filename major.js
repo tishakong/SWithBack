@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
         res.status(500).send('Failed to fetch majors');
         return;
       }
-      res.json(results);
+      res.status(200).json(results);
     });
   });
 

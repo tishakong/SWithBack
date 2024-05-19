@@ -5,6 +5,7 @@ const session = require('express-session');
 const app = express();
 const port = 3000;
 require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
@@ -29,6 +30,9 @@ const view_countRouter = require('./view_count');
 const majorDetailRouter = require('./majorDetail');
 
 const majorRouter = require('./major.js');
+const newchatroomRouter = require('./newchatroom.js');
+const viewchatroomRouter = require('./viewchatroom.js');
+
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
@@ -36,7 +40,8 @@ app.use(session({
 }));
 app.use(cors({origin:'*'}));
 app.use(express.json());
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
 app.use('/deletepost', deletePostRouter);
@@ -58,6 +63,8 @@ app.use('/readnoti', readnotiRouter);
 app.use('/deletenoti', deletenotiRouter);
 app.use('/view_count', view_countRouter);
 app.use('/major', majorRouter);
+app.use('/newchatroom', newchatroomRouter);
+app.use('/viewchatroom', viewchatroomRouter);
 app.use('/majordetail', majorDetailRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
