@@ -23,9 +23,6 @@ router.post('/sendVerificationCode', (req, res) => {
         charset : 'numeric'
     });
     
-    req.session.verificationCode = verificationCode;
-    console.log(req.session.verificationCode);
-    
     const mailOptions = {
         from : 'swithsookmyung@gmail.com',
         to : email,
