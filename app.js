@@ -33,6 +33,7 @@ const majorRouter = require('./major.js');
 const newchatroomRouter = require('./newchatroom.js');
 const viewchatroomRouter = require('./viewchatroom.js');
 const addAdvanceQRouter = require('./addadvance_q');
+const addposttagRouter = require('./addposttag');
 
 app.use(session({
     secret: 'your-secret-key',
@@ -68,6 +69,7 @@ app.use('/newchatroom', newchatroomRouter);
 app.use('/viewchatroom', viewchatroomRouter);
 app.use('/majordetail', majorDetailRouter);
 app.use('/addadvance_q', addAdvanceQRouter);
+app.use('/addposttag', addposttagRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
