@@ -31,7 +31,7 @@ const majorDetailRouter = require('./majorDetail');
 
 const majorRouter = require('./major.js');
 const newchatroomRouter = require('./newchatroom.js');
-const viewchatroomRouter = require('./viewchatroom.js');
+const getchatroomsRouter = require('./getchatrooms.js');
 const addAdvanceQRouter = require('./addadvance_q');
 const addposttagRouter = require('./addposttag');
 
@@ -66,7 +66,7 @@ app.use('/deletenoti', deletenotiRouter);
 app.use('/view_count', view_countRouter);
 app.use('/major', majorRouter);
 app.use('/newchatroom', newchatroomRouter);
-app.use('/viewchatroom', viewchatroomRouter);
+app.use('/getchatrooms', getchatroomsRouter);
 app.use('/majordetail', majorDetailRouter);
 app.use('/addadvance_q', addAdvanceQRouter);
 app.use('/addposttag', addposttagRouter);
