@@ -3,6 +3,10 @@ const cors = require('cors');
 const db = require('./db.js');
 const session = require('express-session');
 const app = express();
+const http = require('http'); // 추가
+const server = http.createServer(app); // 추가
+const { Server } = require('socket.io'); // 추가
+const io = new Server(server); // 추가
 const port = 3000;
 require('dotenv').config();
 const bodyParser = require('body-parser');
@@ -73,6 +77,25 @@ app.use('/addposttag', addposttagRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-app.listen(port, () => {
+// Socket.io 설정 추가
+io.on('connection', (socket) => {
+    console.log('a user connected');
+
+    socket.on('joinRoom', ({ roomId }) => {
+        socket.join(roomId);
+        console.log(`User joined room: ${roomId}`);
+    });
+
+    socket.on('chatMessage', ({ roomId, message }) => {
+        io.to(roomId).emit('message', message);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
+
+
+server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
