@@ -11,7 +11,14 @@ router.post('/', (req, res) => {
         return res.status(400).send('room_id is required');
     }
     
-    const query = 'SELECT * FROM chats WHERE room_id = ?';
+    const query = `
+    SELECT c.sender_id, c.chat_time, c.content, u.nickname 
+    FROM chats c
+    JOIN users u ON c.sender_id = u.user_id
+    WHERE c.room_id = ?
+    ORDER BY c.chat_time ASC
+    `;
+
     db.query(query, [roomId], (error, results) => {
         if (error) {
             return res.status(500).send('Database query error');
