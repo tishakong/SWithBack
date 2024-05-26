@@ -4,9 +4,7 @@ const db = require('./db.js');
 
 router.get('/', (req, res) => {
   const { user_id, post_id } = req.query;
-
-  console.log("getscrap",user_id,post_id)
-
+  
   if (!user_id) {
     return res.status(400).send('user_id is required');
   }
