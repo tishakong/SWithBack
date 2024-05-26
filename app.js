@@ -27,6 +27,7 @@ const readnotiRouter = require('./readnoti');
 const deletenotiRouter = require('./deletenoti')
 const view_countRouter = require('./view_count');
 const majorDetailRouter = require('./majorDetail');
+const userPostsRouter = require('./userposts');
 
 const majorRouter = require('./major.js');
 app.use(session({
@@ -59,6 +60,7 @@ app.use('/deletenoti', deletenotiRouter);
 app.use('/view_count', view_countRouter);
 app.use('/major', majorRouter);
 app.use('/majordetail', majorDetailRouter);
+app.use('/userposts', userPostsRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
