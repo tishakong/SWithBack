@@ -5,6 +5,7 @@ const session = require('express-session');
 const app = express();
 const port = 3000;
 require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
@@ -30,6 +31,14 @@ const majorDetailRouter = require('./majorDetail');
 const userPostsRouter = require('./userposts');
 
 const majorRouter = require('./major.js');
+const newchatroomRouter = require('./newchatroom.js');
+const viewchatroomRouter = require('./viewchatroom.js');
+const addAdvanceQRouter = require('./addadvance_q');
+const addposttagRouter = require('./addposttag');
+const getscrapRouter = require('./getscrap');
+const getAdvanceQRouter = require('./getadvance_q');
+const addapplicationRouter = require('./addapplication');
+
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
@@ -37,7 +46,8 @@ app.use(session({
 }));
 app.use(cors({origin:'*'}));
 app.use(express.json());
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
 app.use('/deletepost', deletePostRouter);
@@ -59,8 +69,15 @@ app.use('/readnoti', readnotiRouter);
 app.use('/deletenoti', deletenotiRouter);
 app.use('/view_count', view_countRouter);
 app.use('/major', majorRouter);
+app.use('/newchatroom', newchatroomRouter);
+app.use('/viewchatroom', viewchatroomRouter);
 app.use('/majordetail', majorDetailRouter);
 app.use('/userposts', userPostsRouter);
+app.use('/addadvance_q', addAdvanceQRouter);
+app.use('/addposttag', addposttagRouter);
+app.use('/getscrap', getscrapRouter);
+app.use('/getadvance_q', getAdvanceQRouter);
+app.use('/addapplication', addapplicationRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
