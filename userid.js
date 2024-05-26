@@ -5,10 +5,10 @@ const port = 3000;
 
 app.use(express.json());
 
-app.get('/:userId', (req, res) => {
-    const userId = req.params.userId;
+app.get('/:user_id', (req, res) => {
+    const user_id = req.params.user_id;
 
-    db.query('SELECT * FROM users WHERE user_id = ?', userId, (err, results) => {
+    db.query('SELECT * FROM users WHERE user_id = ?', user_id, (err, results) => {
         if (err) {
             console.error('Error fetching user information: ' + err.stack);
             res.status(500).json({ error: 'Internal server error' });
