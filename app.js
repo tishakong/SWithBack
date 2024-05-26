@@ -34,12 +34,18 @@ const readnotiRouter = require('./readnoti');
 const deletenotiRouter = require('./deletenoti');
 const view_countRouter = require('./view_count');
 const majorDetailRouter = require('./majorDetail');
+const userPostsRouter = require('./userposts');
 const majorRouter = require('./major.js');
 const newchatroomRouter = require('./newchatroom.js');
 const getchatroomsRouter = require('./getchatrooms.js');
 const addAdvanceQRouter = require('./addadvance_q');
+const addAdvanceARouter = require('./addadvance_a');
 const addposttagRouter = require('./addposttag');
 const getChatroomMessagesRouter = require('./getChatroomMessages.js');
+const getscrapRouter = require('./getscrap');
+const getAdvanceQRouter = require('./getadvance_q');
+const addapplicationRouter = require('./addapplication');
+
 
 app.use(session({
     secret: 'your-secret-key',
@@ -75,9 +81,15 @@ app.use('/major', majorRouter);
 app.use('/newchatroom', newchatroomRouter);
 app.use('/getchatrooms', getchatroomsRouter);
 app.use('/majordetail', majorDetailRouter);
+app.use('/userposts', userPostsRouter);
 app.use('/addadvance_q', addAdvanceQRouter);
+app.use('/addadvance_a', addAdvanceARouter);
 app.use('/addposttag', addposttagRouter);
 app.use('/getchatroommessages', getChatroomMessagesRouter);
+app.use('/getscrap', getscrapRouter);
+app.use('/getadvance_q', getAdvanceQRouter);
+app.use('/addapplication', addapplicationRouter);
+
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
