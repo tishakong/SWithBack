@@ -3,13 +3,15 @@ const cors = require('cors');
 const db = require('./db.js');
 const session = require('express-session');
 const app = express();
-const http = require('http'); // 추가
-const server = http.createServer(app); // 추가
-const { Server } = require('socket.io'); // 추가
-const io = new Server(server); // 추가
-const port = 3000;
-require('dotenv').config();
+const http = require('http');
+const socketIo = require('socket.io');
 const bodyParser = require('body-parser');
+require('dotenv').config();
+
+const port = 3000;
+
+const server = http.createServer(app);
+const io = socketIo(server);
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
@@ -29,10 +31,9 @@ const setNotiRouter = require('./setnoti');
 const getUserRouter = require('./userid');
 const getnotiRouter = require('./getnoti');
 const readnotiRouter = require('./readnoti');
-const deletenotiRouter = require('./deletenoti')
+const deletenotiRouter = require('./deletenoti');
 const view_countRouter = require('./view_count');
 const majorDetailRouter = require('./majorDetail');
-
 const majorRouter = require('./major.js');
 const newchatroomRouter = require('./newchatroom.js');
 const getchatroomsRouter = require('./getchatrooms.js');
@@ -45,10 +46,11 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }));
-app.use(cors({origin:'*'}));
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.use('/signup', signupRouter);
 app.use('/addpost', addPostRouter);
 app.use('/deletepost', deletePostRouter);
@@ -82,22 +84,67 @@ app.get('/', (req, res) => res.send('Hello World!'));
 // Socket.io 설정 추가
 io.on('connection', (socket) => {
     console.log('a user connected');
-
-    socket.on('joinRoom', ({ roomId }) => {
+  
+    socket.on('joinRoom', (roomId) => {
         socket.join(roomId);
         console.log(`User joined room: ${roomId}`);
+  
+        // Fetch chat history
+        const query = `
+            SELECT c.sender_id, c.chat_time, c.content, u.nickname 
+            FROM chats c
+            JOIN users u ON c.sender_id = u.user_id
+            WHERE c.room_id = ?
+            ORDER BY c.chat_time DESC
+            LIMIT 20
+        `;
+  
+        db.query(query, [roomId], (error, results) => {
+            if (error) {
+                console.error('Error fetching chat history:', error);
+                return;
+            }
+            socket.emit('chatHistory', { data: results.reverse() });
+        });
     });
-
-    socket.on('chatMessage', ({ roomId, message }) => {
-        io.to(roomId).emit('message', message);
+  
+    socket.on('getChatHistory', (data) => {
+        const { roomId, limit, lastMessageTime } = data;
+        const query = `
+            SELECT c.sender_id, c.chat_time, c.content, u.nickname 
+            FROM chats c
+            JOIN users u ON c.sender_id = u.user_id
+            WHERE c.room_id = ? AND c.chat_time < ?
+            ORDER BY c.chat_time DESC
+            LIMIT ?
+        `;
+  
+        db.query(query, [roomId, lastMessageTime, limit], (error, results) => {
+            if (error) {
+                console.error('Error fetching chat history:', error);
+                return;
+            }
+            socket.emit('chatHistory', { data: results.reverse() });
+        });
     });
-
+  
+    socket.on('chatMessage', (msg) => {
+        const { roomId, sender_id, nickname, content, chat_time } = msg;
+        const query = 'INSERT INTO chats (room_id, sender_id, content, chat_time) VALUES (?, ?, ?, ?)';
+        db.query(query, [roomId, sender_id, content, chat_time], (error, results) => {
+            if (error) {
+                console.error('Error saving message:', error);
+                return;
+            }
+            io.to(roomId).emit('chatMessage', msg);
+        });
+    });
+  
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
 });
-
-
+  
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
