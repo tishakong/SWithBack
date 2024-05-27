@@ -46,6 +46,8 @@ const getChatroomMessagesRouter = require('./getChatroomMessages.js');
 const getscrapRouter = require('./getscrap');
 const getAdvanceQRouter = require('./getadvance_q');
 const addapplicationRouter = require('./addapplication');
+const getUserContactsRouter = require('./getusercontacts');
+
 
 
 app.use(session({
@@ -91,6 +93,8 @@ app.use('/getchatroommessages', getChatroomMessagesRouter);
 app.use('/getscrap', getscrapRouter);
 app.use('/getadvance_q', getAdvanceQRouter);
 app.use('/addapplication', addapplicationRouter);
+app.use('/getusercontacts', getUserContactsRouter);
+
 
 
 app.get('/', (req, res) => res.send('Hello World!'));
