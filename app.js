@@ -47,7 +47,6 @@ const getscrapRouter = require('./getscrap');
 const getAdvanceQRouter = require('./getadvance_q');
 const addapplicationRouter = require('./addapplication');
 
-
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
