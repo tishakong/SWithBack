@@ -38,7 +38,6 @@ const addposttagRouter = require('./addposttag');
 const getscrapRouter = require('./getscrap');
 const getAdvanceQRouter = require('./getadvance_q');
 const addapplicationRouter = require('./addapplication');
-const getUserContactsRouter = require('./getusercontacts');
 
 app.use(session({
     secret: 'your-secret-key',
@@ -79,7 +78,6 @@ app.use('/addposttag', addposttagRouter);
 app.use('/getscrap', getscrapRouter);
 app.use('/getadvance_q', getAdvanceQRouter);
 app.use('/addapplication', addapplicationRouter);
-app.use('/users/contacts', getUserContactsRouter); 
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
