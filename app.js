@@ -141,7 +141,7 @@ io.on('connection', (socket) => {
     });
   
     socket.on('chatMessage', (msg) => {
-        const { roomId, sender_id, nickname, content, chat_time } = msg;
+        const { roomId, sender_id, content, chat_time } = msg;
         const query = 'INSERT INTO chats (room_id, sender_id, content, chat_time) VALUES (?, ?, ?, ?)';
         db.query(query, [roomId, sender_id, content, chat_time], (error, results) => {
             if (error) {
@@ -156,7 +156,7 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
     });
 });
-  
+
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
