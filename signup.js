@@ -24,8 +24,18 @@ app.post('/', (req, res) => {
 
     db.query('INSERT INTO users SET ?', newUser, (err, results) => {
         if (err) {
-            console.error('Error registering user: ' + err.stack);
-            res.status(500).json({ error: 'Internal server error' });
+            if (err.code === 'ER_DUP_ENTRY') {
+                let field = '';
+                if (err.sqlMessage.includes('student_id')) {
+                    field = 'student_id';
+                } else if (err.sqlMessage.includes('nickname')) {
+                    field = 'nickname';
+                }
+                res.status(409).json({ field, message: `이미 사용 중인 ${field === 'student_id' ? '학번' : '닉네임'}입니다.` });
+            } else {
+                console.error('Error registering user: ' + err.stack);
+                res.status(500).json({ error: 'Internal server error' });
+            }
             return;
         }
         console.log('User registered with ID: ' + results.insertId);
