@@ -23,9 +23,10 @@ router.get('/', (req, res) => {
     values = [user_id, post_id];
   } else {
     sql = `
-      SELECT * 
-      FROM scrap_posts
-      WHERE user_id = ?
+      SELECT sp.*, p.* 
+      FROM scrap_posts sp
+      JOIN posts p ON sp.post_id = p.post_id
+      WHERE sp.user_id = ?
     `;
     values = [user_id];
   }
