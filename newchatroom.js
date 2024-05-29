@@ -57,6 +57,16 @@ router.post('/', (req,res) => {
                                     return;
                                 }
                                 res.status(200).send('New chat room created successfully');
+
+                                // 함께 스터디한 사람들 목록에 추가 (s)
+                                addStudyMembers(writer_id, applicants.map(a => a[1]), (error) => {
+                                    if (error) {
+                                        console.error('Error adding study members: ' + error);
+                                        res.status(500).send('Internal Server Error6');
+                                        return;
+                                    }
+                                    res.status(200).send('Chat mem profile added successfully');
+                                });
                             });
                         });
                     
@@ -84,18 +94,37 @@ router.post('/', (req,res) => {
                             res.status(500).send('Internal Server Error7');
                             return;
                         }
-                        
-    
                     }); 
                 });
-
                 res.status(200).send('Chat room updated successfully');
-                
+                // 함께 스터디한 사람들 목록에 추가 (s)
+                addStudyMembers(null, applicants.map(a => a[1]), (error) => {
+                    if (error) {
+                        console.error('Error adding study members: ' + error);
+                        res.status(500).send('Internal Server Error9');
+                        return;
+                    }
+                    res.status(200).send('Chat mem profile added successfully');
+                });
 
 
             });
         }
     });
 });
+
+// 함께 스터디한 사람들 목록에 추가하는 함수 (s)
+function addStudyMembers(writer_id, memberIds, callback) {
+    const studyMembers = writer_id ? memberIds.concat(writer_id) : memberIds;
+    const values = studyMembers.map(member_id => [writer_id, member_id]);
+
+    db.query('INSERT IGNORE INTO study_members (user_id, member_id) VALUES ?', [values], (error, results) => {
+        if (error) {
+            callback(error);
+            return;
+        }
+        callback(null);
+    });
+} //
 
 module.exports = router;
