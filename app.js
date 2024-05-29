@@ -1,3 +1,4 @@
+//app.js
 const express = require('express');
 const cors = require('cors');
 const db = require('./db.js');
@@ -12,6 +13,7 @@ const port = 3000;
 
 const server = http.createServer(app);
 const io = socketIo(server);
+require('./socket.js')(io);
 
 const signupRouter = require('./signup');
 const addPostRouter = require('./addpost');
@@ -37,7 +39,7 @@ const majorDetailRouter = require('./majorDetail');
 const userPostsRouter = require('./userposts');
 const majorRouter = require('./major.js');
 const newchatroomRouter = require('./newchatroom.js');
-const getchatroomsRouter = require('./getchatrooms.js');
+//const getchatroomsRouter = require('./getchatrooms.js');
 const addAdvanceQRouter = require('./addadvance_q');
 const addAdvanceARouter = require('./addadvance_a');
 const addposttagRouter = require('./addposttag');
@@ -79,7 +81,7 @@ app.use('/deletenoti', deletenotiRouter);
 app.use('/view_count', view_countRouter);
 app.use('/major', majorRouter);
 app.use('/newchatroom', newchatroomRouter);
-app.use('/getchatrooms', getchatroomsRouter);
+//app.use('/getchatrooms', getchatroomsRouter);
 app.use('/majordetail', majorDetailRouter);
 app.use('/userposts', userPostsRouter);
 app.use('/addadvance_q', addAdvanceQRouter);
@@ -93,69 +95,69 @@ app.use('/addapplication', addapplicationRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-// Socket.io 설정 추가
-io.on('connection', (socket) => {
-    console.log('a user connected');
+//Socket.io 설정 추가
+// io.on('connection', (socket) => {
+//     console.log('a user connected');
   
-    socket.on('joinRoom', (roomId) => {
-        socket.join(roomId);
-        console.log(`User joined room: ${roomId}`);
+//     socket.on('joinRoom', (roomId) => {
+//         socket.join(roomId);
+//         console.log(`User joined room: ${roomId}`);
   
-        // Fetch chat history
-        const query = `
-            SELECT c.sender_id, c.chat_time, c.content, u.nickname 
-            FROM chats c
-            JOIN users u ON c.sender_id = u.user_id
-            WHERE c.room_id = ?
-            ORDER BY c.chat_time DESC
-            LIMIT 20
-        `;
+//         // Fetch chat history
+//         const query = `
+//             SELECT c.sender_id, c.chat_time, c.content, u.nickname 
+//             FROM chats c
+//             JOIN users u ON c.sender_id = u.user_id
+//             WHERE c.room_id = ?
+//             ORDER BY c.chat_time DESC
+//             LIMIT 20
+//         `;
   
-        db.query(query, [roomId], (error, results) => {
-            if (error) {
-                console.error('Error fetching chat history:', error);
-                return;
-            }
-            socket.emit('chatHistory', { data: results.reverse() });
-        });
-    });
+//         db.query(query, [roomId], (error, results) => {
+//             if (error) {
+//                 console.error('Error fetching chat history:', error);
+//                 return;
+//             }
+//             socket.emit('chatHistory', { data: results.reverse() });
+//         });
+//     });
   
-    socket.on('getChatHistory', (data) => {
-        const { roomId, limit, lastMessageTime } = data;
-        const query = `
-            SELECT c.sender_id, c.chat_time, c.content, u.nickname 
-            FROM chats c
-            JOIN users u ON c.sender_id = u.user_id
-            WHERE c.room_id = ? AND c.chat_time < ?
-            ORDER BY c.chat_time DESC
-            LIMIT ?
-        `;
+//     socket.on('getChatHistory', (data) => {
+//         const { roomId, limit, lastMessageTime } = data;
+//         const query = `
+//             SELECT c.sender_id, c.chat_time, c.content, u.nickname 
+//             FROM chats c
+//             JOIN users u ON c.sender_id = u.user_id
+//             WHERE c.room_id = ? AND c.chat_time < ?
+//             ORDER BY c.chat_time DESC
+//             LIMIT ?
+//         `;
   
-        db.query(query, [roomId, lastMessageTime, limit], (error, results) => {
-            if (error) {
-                console.error('Error fetching chat history:', error);
-                return;
-            }
-            socket.emit('chatHistory', { data: results.reverse() });
-        });
-    });
+//         db.query(query, [roomId, lastMessageTime, limit], (error, results) => {
+//             if (error) {
+//                 console.error('Error fetching chat history:', error);
+//                 return;
+//             }
+//             socket.emit('chatHistory', { data: results.reverse() });
+//         });
+//     });
   
-    socket.on('chatMessage', (msg) => {
-        const { roomId, sender_id, content, chat_time } = msg;
-        const query = 'INSERT INTO chats (room_id, sender_id, content, chat_time) VALUES (?, ?, ?, ?)';
-        db.query(query, [roomId, sender_id, content, chat_time], (error, results) => {
-            if (error) {
-                console.error('Error saving message:', error);
-                return;
-            }
-            io.to(roomId).emit('chatMessage', msg);
-        });
-    });
+//     socket.on('chatMessage', (msg) => {
+//         const { roomId, sender_id, content, chat_time } = msg;
+//         const query = 'INSERT INTO chats (room_id, sender_id, content, chat_time) VALUES (?, ?, ?, ?)';
+//         db.query(query, [roomId, sender_id, content, chat_time], (error, results) => {
+//             if (error) {
+//                 console.error('Error saving message:', error);
+//                 return;
+//             }
+//             io.to(roomId).emit('chatMessage', msg);
+//         });
+//     });
   
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-});
+//     socket.on('disconnect', () => {
+//         console.log('user disconnected');
+//     });
+// });
 
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
