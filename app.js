@@ -49,6 +49,11 @@ const addapplicationRouter = require('./addapplication');
 const getStudyMembersRouter = require('./getStudyMembers.js');
 const checkReviewRouter = require('./checkreview');
 const patchpostprogressRouter = require('./patchpostprogress');
+const getapplicantsRouter = require('./getapplicants.js');
+const patchapplicantstatusRouter = require('./patchapplicantstatus');
+const getadvanceanswerRouter = require('./getadvanceanswer');
+
+
 
 app.use(session({
     secret: 'your-secret-key',
@@ -96,6 +101,9 @@ app.use('/addapplication', addapplicationRouter);
 app.use('/getstudymembers', getStudyMembersRouter);
 app.use('/checkreview', checkReviewRouter);
 app.use('/patchpostprogress', patchpostprogressRouter);
+app.use('/getapplicants', getapplicantsRouter);
+app.use('/patchapplicantstatus', patchapplicantstatusRouter);
+app.use('/getadvanceanswer', getadvanceanswerRouter);
 
 
 app.get('/', (req, res) => res.send('Hello World!'));
