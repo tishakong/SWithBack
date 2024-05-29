@@ -47,6 +47,7 @@ const getscrapRouter = require('./getscrap');
 const getAdvanceQRouter = require('./getadvance_q');
 const addapplicationRouter = require('./addapplication');
 const getStudyMembersRouter = require('./getStudyMembers.js');
+const checkReviewRouter = require('./checkreview');
 
 app.use(session({
     secret: 'your-secret-key',
@@ -92,6 +93,7 @@ app.use('/getscrap', getscrapRouter);
 app.use('/getadvance_q', getAdvanceQRouter);
 app.use('/addapplication', addapplicationRouter);
 app.use('/getstudymembers', getStudyMembersRouter);
+app.use('/checkreview', checkReviewRouter);
 
 
 app.get('/', (req, res) => res.send('Hello World!'));
