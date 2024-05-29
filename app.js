@@ -46,12 +46,9 @@ const getChatroomMessagesRouter = require('./getChatroomMessages.js');
 const getscrapRouter = require('./getscrap');
 const getAdvanceQRouter = require('./getadvance_q');
 const addapplicationRouter = require('./addapplication');
-<<<<<<< Updated upstream
 const getStudyMembersRouter = require('./getStudyMembers.js');
 const checkReviewRouter = require('./checkreview');
-=======
 const patchpostprogressRouter = require('./patchpostprogress');
->>>>>>> Stashed changes
 
 app.use(session({
     secret: 'your-secret-key',
@@ -96,12 +93,9 @@ app.use('/getchatroommessages', getChatroomMessagesRouter);
 app.use('/getscrap', getscrapRouter);
 app.use('/getadvance_q', getAdvanceQRouter);
 app.use('/addapplication', addapplicationRouter);
-<<<<<<< Updated upstream
 app.use('/getstudymembers', getStudyMembersRouter);
 app.use('/checkreview', checkReviewRouter);
-=======
 app.use('/patchpostprogress', patchpostprogressRouter);
->>>>>>> Stashed changes
 
 
 app.get('/', (req, res) => res.send('Hello World!'));
