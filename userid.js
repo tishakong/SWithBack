@@ -25,11 +25,11 @@ app.get('/:user_id', (req, res) => {
     });
 });
 
-//(소윤 추가)
+
 // 유저 정보 업데이트
 app.put('/:user_id', (req, res) => {
     const user_id = req.params.user_id;
-    const { nickname, major1, major2, major3, major1_change_log, introduction, all_noti, chatroom_noti, qna_noti, accept_noti, review_noti } = req.body;
+    const { nickname, major1, major2, major3, major1_change_log, introduction, all_noti, chatroom_noti, qna_noti, accept_noti, review_noti, user_image } = req.body;
 
     const query = `
         UPDATE users 
@@ -44,11 +44,12 @@ app.put('/:user_id', (req, res) => {
             chatroom_noti = ?, 
             qna_noti = ?, 
             accept_noti = ?, 
-            review_noti = ?
+            review_noti = ?,
+            user_image = ?
         WHERE user_id = ?
     `;
 
-    const values = [nickname, major1, major2, major3, major1_change_log, introduction, all_noti, chatroom_noti, qna_noti, accept_noti, review_noti, user_id];
+    const values = [nickname, major1, major2, major3, major1_change_log, introduction, all_noti, chatroom_noti, qna_noti, accept_noti, review_noti, user_image, user_id];
 
     db.query(query, values, (err, result) => {
         if (err) {
@@ -66,13 +67,5 @@ app.put('/:user_id', (req, res) => {
     });
 });
 
-
-//
-//app.listen(port, () => {
-  //  console.log(`Server is running on port ${port}`);
-//});
-
-
-//
 
 module.exports = app;
