@@ -22,7 +22,7 @@ const deleteScrapRouter = require('./deletescrap');
 const loginRouter = require('./login');
 const logoutRouter = require('./logout');
 const editPostRouter = require('./editpost');
-const addReviewRouter = require('./addreview.js');
+const addReviewRouter = require('./addreview');
 const deleteReviewRouter = require('./deletereview.js');
 const getReviewRouter = require('./getreview');
 const checkEmailRouter = require('./checkemail');
@@ -55,7 +55,7 @@ const getadvanceanswerRouter = require('./getadvanceanswer');
 const getquestionsRouter = require('./getquestions');
 const addquestionRouter = require('./addquestion');
 const addanswerRouter = require('./addanswer');
-
+const changePasswordRouter = require('./userid');
 
 
 app.use(session({
@@ -110,7 +110,7 @@ app.use('/getadvanceanswer', getadvanceanswerRouter);
 app.use('/getquestions', getquestionsRouter);
 app.use('/addanswer', addanswerRouter);
 app.use('/addquestion', addquestionRouter);
-
+app.use('/changePassword', changePasswordRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
