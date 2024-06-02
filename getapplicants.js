@@ -8,6 +8,7 @@ router.get('/:postId', (req, res) => {
     const query = `
         SELECT 
             a.applicant_id,
+            a.status,
             u.nickname,
             u.user_image,
             LEFT(u.student_id, 2) AS student_id,
