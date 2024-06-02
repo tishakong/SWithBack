@@ -52,6 +52,9 @@ const patchpostprogressRouter = require('./patchpostprogress');
 const getapplicantsRouter = require('./getapplicants.js');
 const patchapplicantstatusRouter = require('./patchapplicantstatus');
 const getadvanceanswerRouter = require('./getadvanceanswer');
+const getquestionsRouter = require('./getquestions');
+const addquestionRouter = require('./addquestion');
+const addanswerRouter = require('./addanswer');
 const changePasswordRouter = require('./userid');
 
 
@@ -104,6 +107,9 @@ app.use('/patchpostprogress', patchpostprogressRouter);
 app.use('/getapplicants', getapplicantsRouter);
 app.use('/patchapplicantstatus', patchapplicantstatusRouter);
 app.use('/getadvanceanswer', getadvanceanswerRouter);
+app.use('/getquestions', getquestionsRouter);
+app.use('/addanswer', addanswerRouter);
+app.use('/addquestion', addquestionRouter);
 app.use('/changePassword', changePasswordRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
