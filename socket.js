@@ -1,11 +1,10 @@
-// socket.js
 const db = require('./db.js');
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
         console.log('a user connected');
 
-        socket.on('fetchChatRooms', (data) => {
+        socket.on('fetchChatRooms', (data) => { //chat.dart
             const userId = data.userId;
             if (!userId) {
                 console.error('userId is required');
@@ -82,7 +81,7 @@ module.exports = (io) => {
         });
 
         socket.on('joinRoom', (roomId) => {
-            socket.join(roomId);
+            socket.join(roomId); //방에 참가
             console.log(`User joined room: ${roomId}`);
 
             const query = `
@@ -99,7 +98,7 @@ module.exports = (io) => {
                     console.error('Error fetching chat history:', error);
                     return;
                 }
-                socket.emit('chatHistory', { data: results.reverse() });
+                socket.emit('chatHistory', { data: results.reverse() }); //채팅 내역 전송
             });
         });
 
@@ -128,7 +127,7 @@ module.exports = (io) => {
             });
         });
 
-        socket.on('chatMessage', (msg) => {
+        socket.on('chatMessage', (msg) => { //새로운 메시지 데이터 수신
             const { roomId, sender_id, content, chat_time } = msg;
             const query = 'INSERT INTO chats (room_id, sender_id, content, chat_time) VALUES (?, ?, ?, ?)';
             db.query(query, [roomId, sender_id, content, chat_time], (error, results) => {
@@ -136,29 +135,13 @@ module.exports = (io) => {
                     console.error('Error saving message:', error);
                     return;
                 }
-                io.to(roomId).emit('chatMessage', msg);
-
-                // Update last message in chat room
-                const updateRoomQuery = 'UPDATE chat_rooms SET last_message = ?, last_message_time = ? WHERE room_id = ?';
-                db.query(updateRoomQuery, [content, chat_time, roomId], (updateError, updateResults) => {
-                    if (updateError) {
-                        console.error('Error updating chat room:', updateError);
-                        return;
-                    }
-                    // Fetch updated chat rooms for the user
-                    const fetchRoomsQuery = `
-                        SELECT cr.room_id, cr.study_name, cr.last_message, cr.last_message_time
-                        FROM chat_rooms cr
-                        JOIN user_rooms ur ON cr.room_id = ur.room_id
-                        WHERE ur.user_id = ?
-                    `;
-                    db.query(fetchRoomsQuery, [sender_id], (fetchError, fetchResults) => {
-                        if (fetchError) {
-                            console.error('Error fetching updated chat rooms:', fetchError);
-                            return;
-                        }
-                        io.to(roomId).emit('chatRooms', { data: fetchResults });
-                    });
+                io.to(roomId).emit('chatMessage', msg); // 같은 방의 다른 user들의 클라이언트로 데이터를 전송
+                
+                // 모든 클라이언트에게 새로운 메시지 알림
+                io.emit('newMessage', {
+                    room_id: roomId,
+                    last_message: content,
+                    last_message_time: chat_time,
                 });
             });
         });
