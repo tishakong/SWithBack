@@ -138,10 +138,26 @@ module.exports = (io) => {
                 io.to(roomId).emit('chatMessage', msg); // 같은 방의 다른 user들의 클라이언트로 데이터를 전송
                 
                 // 모든 클라이언트에게 새로운 메시지 알림
-                io.emit('newMessage', {
-                    room_id: roomId,
-                    last_message: content,
-                    last_message_time: chat_time,
+                const studyNameQuery = `
+                    SELECT posts.study_name
+                    FROM chat_rooms
+                    JOIN posts ON chat_rooms.post_id = posts.post_id
+                    WHERE chat_rooms.room_id = ?
+                `;
+                db.query(studyNameQuery, [roomId], (error, studyResults) => {
+                    if (error) {
+                        console.error('Error fetching study name:', error);
+                        return;
+                    }
+                    if (studyResults.length > 0) {
+                        const studyName = studyResults[0].study_name;
+                        io.emit('newMessage', {
+                            room_id: roomId,
+                            last_message: content,
+                            last_message_time: chat_time,
+                            study_name: studyName,
+                        });
+                    }
                 });
             });
         });
