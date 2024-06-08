@@ -5,12 +5,19 @@ const db = require('./db.js');
 router.get('/:postId?', (req, res) => {
     const postId = req.params.postId;
     let sql = `
-        SELECT * 
-        FROM posts
+        SELECT p.*, u.nickname, u.student_id, u.user_image, 
+               m1.major_name AS major1,
+               m2.major_name AS major2,
+               m3.major_name AS major3
+        FROM posts p
+        LEFT JOIN users u ON p.writer_id = u.user_id
+        LEFT JOIN majors m1 ON u.major1 = m1.major_id
+        LEFT JOIN majors m2 ON u.major2 = m2.major_id
+        LEFT JOIN majors m3 ON u.major3 = m3.major_id
     `;
 
     if (postId) {
-        sql += ` WHERE post_id = ?`;
+        sql += ` WHERE p.post_id = ?`;
     }
 
     db.query(sql, [postId], (err, results) => {
