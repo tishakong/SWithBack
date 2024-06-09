@@ -22,6 +22,7 @@ const deleteScrapRouter = require('./deletescrap');
 const loginRouter = require('./login');
 const logoutRouter = require('./logout');
 const editPostRouter = require('./editpost');
+const editPostTagRouter = require('./editposttag');
 const addReviewRouter = require('./addreview');
 const deleteReviewRouter = require('./deletereview.js');
 const getReviewRouter = require('./getreview');
@@ -58,6 +59,7 @@ const addanswerRouter = require('./addanswer');
 const changePasswordRouter = require('./userid');
 
 
+
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
@@ -75,6 +77,7 @@ app.use('/getposts', getPostsRouter);
 app.use('/addscrap', addScrapRouter);
 app.use('/deletescrap', deleteScrapRouter);
 app.use('/editpost', editPostRouter);
+app.use('/editposttag', editPostTagRouter);
 app.use('/addReview', addReviewRouter);
 app.use('/deleteReview', deleteReviewRouter);
 app.use('/login', loginRouter);
