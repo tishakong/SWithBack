@@ -1,15 +1,21 @@
 const db = require('./db.js');
 
 module.exports = (io) => {
+    const viewingUsers = {};
+    
     io.on('connection', (socket) => {
         console.log('a user connected');
+        
 
         socket.on('fetchChatRooms', (data) => { //chat.dart
+            console.log('fetchChatRooms event received:', data);
             const userId = data.userId;
             if (!userId) {
                 console.error('userId is required');
                 return;
             }
+            viewingUsers[userId] = socket.id;//키 : userId, 값 : socket.id
+            console.log(`User ${userId} with socket ID ${socket.id} is viewing chat rooms.`);
 
             const chatRoomsQuery = `
                 SELECT 
@@ -70,11 +76,7 @@ module.exports = (io) => {
                         room_id: room.room_id,
                         last_message: lastMessagesMap[room.room_id]?.last_message || null,
                         last_message_time: lastMessagesMap[room.room_id]?.last_message_time || null,
-                    })).sort((a, b) => {
-                        const timeA = a.last_message_time ? new Date(a.last_message_time) : new Date(0);
-                        const timeB = b.last_message_time ? new Date(b.last_message_time) : new Date(0);
-                        return timeB - timeA;
-                    });
+                    }));
 
                     socket.emit('chatRooms', { data: results });
                 });
@@ -152,12 +154,30 @@ module.exports = (io) => {
                     }
                     if (studyResults.length > 0) {
                         const studyName = studyResults[0].study_name;
-                        io.emit('newMessage', {
-                            room_id: roomId,
-                            last_message: content,
-                            last_message_time: chat_time,
-                            study_name: studyName,
-                        });
+
+                        const updateQuery = `
+                            SELECT chat_room_mem.member_id
+                            FROM chat_room_mem
+                            WHERE chat_room_mem.room_id = ? AND chat_room_mem.is_left != 1
+                        `;
+                        db.query(updateQuery, [roomId], (error, members) => {
+                            if (error) {
+                                console.error('Error fetching room members:', error);
+                                return;
+                            }
+                            members.forEach(member => {
+                                const memberId = member.member_id;
+                                if (viewingUsers[memberId]) {
+                                    const socketId = viewingUsers[memberId];
+                                    io.to(socketId).emit('newMessage', {
+                                        room_id: roomId,
+                                        last_message: content,
+                                        last_message_time: chat_time,
+                                        study_name: studyName,
+                                    });
+                                }
+                            });
+                        })
                     }
                 });
             });
@@ -165,6 +185,14 @@ module.exports = (io) => {
 
         socket.on('disconnect', () => {
             console.log('user disconnected');
+            for (const userId in viewingUsers) {
+                if (viewingUsers[userId] === socket.id) {
+                    delete viewingUsers[userId];
+                    console.log(`User ${userId} with socket ID ${socket.id} has left chat rooms.`);
+                    break;
+                }
+            }
         });
+        
     });
 };
