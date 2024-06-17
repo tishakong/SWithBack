@@ -23,6 +23,7 @@ module.exports = (io) => {
                     posts ON chat_rooms.post_id = posts.post_id
                 WHERE 
                     chat_room_mem.member_id = ?
+                    AND chat_room_mem.is_left != 1
             `;
 
             db.query(chatRoomsQuery, [userId], (error, chatRooms) => {
