@@ -12,7 +12,7 @@ router.get('/:roomId', (req, res) => {
     SELECT crm.member_id, u.nickname
     FROM chat_room_mem crm
     JOIN users u ON crm.member_id = u.user_id
-    WHERE crm.room_id = ?;
+    WHERE crm.room_id = ? AND crm.is_left != 1;
      `;
 
     db.query(query, [roomId], (err, results) => {   
