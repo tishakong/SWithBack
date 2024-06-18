@@ -63,6 +63,8 @@ const changePasswordRouter = require('./userid');
 const getChatroomMembersRouter = require('./getChatroomMembers.js');
 const leaveRoomRouter = require('./leaveroom.js');
 const checkhostRouter = require('./checkhost.js');
+const checkApplicationRouter = require('./checkApplication');
+
 
 app.use(session({
     secret: 'your-secret-key',
@@ -122,6 +124,7 @@ app.use('/changePassword', changePasswordRouter);
 app.use('/getchatroommembers', getChatroomMembersRouter);
 app.use('/leaveroom', leaveRoomRouter);
 app.use('/checkhost', checkhostRouter);
+app.use('/checkApplication', checkApplicationRouter);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
