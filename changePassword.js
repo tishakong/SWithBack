@@ -1,19 +1,19 @@
-// changePassword.js
 const express = require('express');
 const db = require('./db.js');
 const app = express();
+const router = express.Router();
 const port = 3000;
 
 app.use(express.json());
 
-app.put('/:user_id', (req, res) => {
+router.put('/:user_id', (req, res) => {
     const user_id = req.params.user_id;
     const { password } = req.body;
 
     const query = `
         UPDATE users 
         SET 
-            password = ?,
+            password = ?
         WHERE user_id = ?
     `;
 
@@ -31,8 +31,6 @@ app.put('/:user_id', (req, res) => {
             return;
         }
 
-        res.status(200).json({ message: 'User updated successfully' });
+        res.status(200).json({ message: 'Password updated successfully' });
     });
 });
-
-module.exports = router;
