@@ -8,10 +8,25 @@ router.post('/', (req, res) => {
     const { userId } = req.body;
 
     const query = `
-        SELECT DISTINCT u.user_id, u.nickname, u.user_image 
-        FROM chat_room_mem cm1
-        JOIN chat_room_mem cm2 ON cm1.room_id = cm2.room_id
+        SELECT DISTINCT 
+        u.user_id, 
+        u.nickname, 
+        u.user_image,
+        LEFT(u.student_id, 2) AS student_id, 
+        m1.major_name AS major1,
+        m2.major_name AS major2,
+        m3.major_name AS major3
+        FROM 
+            chat_room_mem cm1
+        JOIN 
+            chat_room_mem cm2 ON cm1.room_id = cm2.room_id
         JOIN users u ON cm2.member_id = u.user_id
+        LEFT JOIN 
+            majors m1 ON u.major1 = m1.major_id
+        LEFT JOIN 
+            majors m2 ON u.major2 = m2.major_id
+        LEFT JOIN 
+            majors m3 ON u.major3 = m3.major_id
         WHERE cm1.member_id = ? AND cm2.member_id != ?
     `;
 
